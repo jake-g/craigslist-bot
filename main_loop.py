@@ -1,8 +1,8 @@
-from scraper import do_scrape
-import settings
-import time
 import sys
+import time
 import traceback
+import settings
+from scraper import do_scrape
 
 if __name__ == "__main__":
     while True:

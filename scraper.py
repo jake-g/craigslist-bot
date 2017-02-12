@@ -1,25 +1,22 @@
+import time
 from craigslist import CraigslistHousing
+from dateutil.parser import parse
+from slackclient import SlackClient
+from sqlalchemy import Column, Integer, String, DateTime, Float
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime, Float, Boolean
 from sqlalchemy.orm import sessionmaker
-from dateutil.parser import parse
-from util import post_listing_to_slack, find_points_of_interest
-from slackclient import SlackClient
-import time
 import settings
+from util import post_listing_to_slack, find_points_of_interest
 
 engine = create_engine('sqlite:///listings.db', echo=False)
 
 Base = declarative_base()
 
+
 class Listing(Base):
-    """
-    A table to store data on craigslist listings.
-    """
-
+    # Table to store data on craigslist listings.
     __tablename__ = 'listings'
-
     id = Column(Integer, primary_key=True)
     link = Column(String, unique=True)
     created = Column(DateTime)
@@ -31,21 +28,21 @@ class Listing(Base):
     location = Column(String)
     cl_id = Column(Integer, unique=True)
     area = Column(String)
-    bart_stop = Column(String)
+    transit_stop = Column(String)
+
 
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
 session = Session()
 
+
 def scrape_area(area):
-    """
-    Scrapes craigslist for a certain geographic area, and finds the latest listings.
-    :param area:
-    :return: A list of results.
-    """
+    # Scrapes craigslist area, and returns list of latest listings.
+
     cl_h = CraigslistHousing(site=settings.CRAIGSLIST_SITE, area=area, category=settings.CRAIGSLIST_HOUSING_SECTION,
-                             filters={'max_price': settings.MAX_PRICE, "min_price": settings.MIN_PRICE})
+                             filters={'max_price': settings.MAX_PRICE, "min_price": settings.MIN_PRICE,
+                                      "bedrooms": settings.BEDROOMS})
 
     results = []
     gen = cl_h.get_results(sort_by='newest', geotagged=True, limit=20)
@@ -76,7 +73,7 @@ def scrape_area(area):
                 result.update(geo_data)
             else:
                 result["area"] = ""
-                result["bart"] = ""
+                result["transit"] = ""
 
             # Try parsing the price.
             price = 0
@@ -96,25 +93,22 @@ def scrape_area(area):
                 location=result["where"],
                 cl_id=result["id"],
                 area=result["area"],
-                bart_stop=result["bart"]
+                transit_stop=result["transit"]
             )
 
             # Save the listing so we don't grab it again.
             session.add(listing)
             session.commit()
 
-            # Return the result if it's near a bart station, or if it is in an area we defined.
-            if len(result["bart"]) > 0 or len(result["area"]) > 0:
+            # Return the result if it's near a transit station, or if it is in an area we defined.
+            if len(result["transit"]) > 0 or len(result["area"]) > 0:
                 results.append(result)
 
     return results
 
-def do_scrape():
-    """
-    Runs the craigslist scraper, and posts data to slack.
-    """
 
-    # Create a slack client.
+def do_scrape():
+    # Posts craigslist scraper results to slack.
     sc = SlackClient(settings.SLACK_TOKEN)
 
     # Get all the results from craigslist.
@@ -124,6 +118,6 @@ def do_scrape():
 
     print("{}: Got {} results".format(time.ctime(), len(all_results)))
 
-    # Post each result to slack.
+    # Post to slack.
     for result in all_results:
         post_listing_to_slack(sc, result)
