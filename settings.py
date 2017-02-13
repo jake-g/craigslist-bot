@@ -1,35 +1,39 @@
-import os
 
-## Price
+## System settings
 
-# The minimum rent you want to pay per month.
-MIN_PRICE = 1500
+# How long we should sleep between scrapes of Craigslist. Too fast may get rate limited, too slow may miss listings.
+SLEEP_INTERVAL = 20 * 60  # 20 minutes
 
-# The maximum rent you want to pay per month.
-MAX_PRICE = 2400
+# Which slack channel to post the listings into.
+SLACK_CHANNEL = "#bot"
 
-BEDROOMS = 3
 
-## Location preferences
+## Location and Search preferences
+
+# Search filters (see craigslist.CraigslistHousing filters attribute)
+FILTERS = [
+    {'bedrooms': 2, 'min_price': 1200, 'max_price': 1800},
+    {'bedrooms': 3, 'min_price': 1800, 'max_price': 2400},
+    {'bedrooms': 4, 'min_price': 2400, 'max_price': 3200},
+]
 
 # The Craigslist site you want to search on.
-# For instance, https://sfbay.craigslist.org is SF and the Bay Area.
-# You only need the beginning of the URL.
+# Ex: https://sfbay.craigslist.org is SF and the Bay Area.
 CRAIGSLIST_SITE = 'seattle'
 
-# What Craigslist subdirectories to search on.
-# For instance, https://sfbay.craigslist.org/eby/ is the East Bay, and https://sfbay.craigslist.org/sfc/ is San Francisco.
-# You only need the last three letters of the URLs.
+# What Craigslist subdirectories to search on (three letters.
+# Ex: https://sfbay.craigslist.org/eby/ is the East Bay, and https://sfbay.craigslist.org/sfc/ is San Francisco.
 AREAS = ["see"]
 
+
+# The Craigslist section underneath housing that you want to search in (3 letters.
+# Ex https://sfbay.craigslist.org/search/apa find apartments for rent
+CRAIGSLIST_HOUSING_SECTION = 'apa'
+
+
 # A list of neighborhoods and coordinates that you want to look for apartments in.  Any listing that has coordinates
-# attached will be checked to see which area it is in.  If there's a match, it will be annotated with the area
-# name.  If no match, the neighborhood field, which is a string, will be checked to see if it matches
-# anything in NEIGHBORHOODS.
-#     "university_district": [
-#         [bottom left],
-#         [top right],
-#     ],
+# attached will be checked to see which area it is in.  If there's a match, it will be annotated with the area name.
+#  Ex: "neighborhood": [[bottom left lat, long],[top right lat, long]],
 BOXES = {
     "university_district": [
         [47.652653, -122.321177],
@@ -78,7 +82,7 @@ BOXES = {
 # of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
 # but it also catches listings that don't have coordinates (many listings are missing this info).
 NEIGHBORHOODS = ["wallingford", "eastlake", "fremont", "green lake", "roosevelt", "university district", "udist",
-                 "montlake", "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "university", "ravenna",
+                 "montlake", "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
                  "northgate"]
 
 ## Transit preferences
@@ -97,27 +101,9 @@ TRANSIT_STATIONS = {}
 #     "north_berkeley_bart": [37.8713411,-122.2849758]
 # }
 
-## Search type preferences
 
-# The Craigslist section underneath housing that you want to search in.
-# For instance, https://sfbay.craigslist.org/search/apa find apartments for rent.
-# https://sfbay.craigslist.org/search/sub finds sublets.
-# You only need the last 3 letters of the URLs.
-CRAIGSLIST_HOUSING_SECTION = 'apa'
-
-## System settings
-
-# How long we should sleep between scrapes of Craigslist.
-# Too fast may get rate limited.
-# Too slow may miss listings.
-SLEEP_INTERVAL = 20 * 60  # 20 minutes
-
-# Which slack channel to post the listings into.
-SLACK_CHANNEL = "#bot"
-
-# The token that allows us to connect to slack.
-# Should be put in private.py, or set as an environment variable.
-SLACK_TOKEN = os.getenv('SLACK_TOKEN', "")
+# The token that allows us to connect to slack. Should be put in private.py, or set as an environment variable.
+SLACK_TOKEN = ''
 
 # Any private settings are imported here.
 try:

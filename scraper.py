@@ -37,15 +37,14 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
-def scrape_area(area):
+def scrape_area(area, filter):
     # Scrapes craigslist area, and returns list of latest listings.
 
     cl_h = CraigslistHousing(site=settings.CRAIGSLIST_SITE, area=area, category=settings.CRAIGSLIST_HOUSING_SECTION,
-                             filters={'max_price': settings.MAX_PRICE, "min_price": settings.MIN_PRICE,
-                                      "bedrooms": settings.BEDROOMS})
+                             filters=filter)
 
     results = []
-    gen = cl_h.get_results(sort_by='newest', geotagged=True, limit=20)
+    gen = cl_h.get_results(sort_by='newest', geotagged=True, limit=30)
     while True:
         try:
             result = next(gen)
@@ -114,7 +113,8 @@ def do_scrape():
     # Get all the results from craigslist.
     all_results = []
     for area in settings.AREAS:
-        all_results += scrape_area(area)
+        for filter in settings.FILTERS:
+            all_results += scrape_area(area, filter)
 
     print("{}: Got {} results".format(time.ctime(), len(all_results)))
 
