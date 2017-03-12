@@ -1,3 +1,5 @@
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -91,4 +93,4 @@ ENV/
 # Project specific
 .idea/
 private.py
-listings.db
+#listings.db
