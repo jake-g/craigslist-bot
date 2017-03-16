@@ -34,6 +34,6 @@ RUN mkdir -p /opt/wwc
 ADD . /opt/wwc/apartment-finder
 
 RUN mkdir -p /opt/wwc/logs
+RUN echo 'alias log="tail -f -n 1000 /opt/wwc/logs/afinder.log"' >> ~/.bashrc
 WORKDIR /opt/wwc/apartment-finder
-
 CMD ["/usr/bin/supervisord"]
