@@ -13,7 +13,7 @@ SLACK_CHANNEL = "#bot"
 
 # Search filters (see craigslist.CraigslistHousing filters attribute)
 FILTERS = [
-   # {'bedrooms': 2, 'min_price': 1200, 'max_price': 1800},
+    {'bedrooms': 2, 'min_price': 1200, 'max_price': 1800},
     {'bedrooms': 3, 'min_price': 1800, 'max_price': 2400},
     {'bedrooms': 4, 'min_price': 2400, 'max_price': 3200},
 ]
@@ -84,7 +84,7 @@ BOXES = {
 # but it also catches listings that don't have coordinates (many listings are missing this info).
 NEIGHBORHOODS = ["wallingford", "eastlake", "fremont", "green lake", "roosevelt", "university district", "udist",
                  "montlake", "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
-                 "northgate"]
+                 "northgate", "ballard"]
 
 ## Transit preferences
 
