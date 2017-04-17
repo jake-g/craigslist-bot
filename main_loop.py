@@ -6,7 +6,7 @@ from scraper import do_scrape
 
 if __name__ == "__main__":
     while True:
-        print("{}: Starting scrape cycle".format(time.ctime()))
+        #print("{}: Starting scrape cycle".format(time.ctime()))
         try:
             do_scrape()
         except KeyboardInterrupt:
@@ -16,5 +16,6 @@ if __name__ == "__main__":
             print("Error with the scraping:", sys.exc_info()[0])
             traceback.print_exc()
         else:
-            print("{}: Successfully finished scraping".format(time.ctime()))
+            pass
+            #print("{}: Successfully finished scraping".format(time.ctime()))
         time.sleep(settings.SLEEP_INTERVAL)

@@ -49,7 +49,7 @@ Installation + Usage
 * To run the program with the default configuration:
     * `docker run -d -e SLACK_TOKEN={YOUR_SLACK_TOKEN} craigslist`
 * To run the program with your own configuration:
-    * `docker run -d -e SLACK_TOKEN={YOUR_SLACK_TOKEN} -v {ABSOLUTE_PATH_TO_YOUR_CONFIG_FOLDER}:/opt/wwc/apartment-finder/config craigslist`
+    * `docker run -d -e SLACK_TOKEN={YOUR_SLACK_TOKEN} -v {ABSOLUTE_PATH_TO_YOUR_CONFIG_FOLDER}:/opt/wwc/craigslist-bot/config craigslist`
 
 
 Troubleshooting
@@ -63,4 +63,18 @@ Troubleshooting
     * `select * from listings` will get all of the stored listings.
     * If nothing is in the database, you may need to wait for a bit, or verify that your settings aren't too restrictive and aren't finding any listings.
     * You can see how many listings are being found by looking at the logs.
-* Inspect the logs using `tail -f -n 1000 /opt/wwc/logs/afinder.log`. (dockerfile has alias for this: `log`)
+* Inspect the logs using `tail -f -n 1000 /opt/wwc/logs/craigslist-bot.log`. (dockerfile has alias for this: `log`)
+
+
+On Server (no docker)
+--------------------
+1. Install pre-reqs
+```
+apt-get update && apt-get -y install python3 python3-pip make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev zip git-core supervisor sqlite
+```
+2. Make folders `mkdir -p /opt/wwc && mkdir -p /opt/wwc/logs`
+3. Clone repo in `/opt/wwc` make sure the repo folder is called `craigslist-bot`, or whatever the path in `supervisord.conf` is
+4. merge `deployment/supervisord.conf` with `/etc/supervisor/supervisord.conf`, note `nodaemon=true` will not let you do other stuff on server (kinda)
+5. Install python packages: `pip3 install -r requirements.txt`
+6. Add alias to view log `alias cl-log="tail -f -n 1000 /opt/wwc/logs/craigslist-bot.log"`
+7. Reboot and make sure it is running at boot (use alias to check log)
