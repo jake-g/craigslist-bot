@@ -23,7 +23,7 @@ def post_listing_to_slack(sc, listing):
     desc = "{0} | {1} | {2} | <{3}>".format(listing["area"], listing["price"], listing["name"], listing["url"])
     sc.api_call(
         "chat.postMessage", channel=settings.SLACK_CHANNEL, text=desc,
-        username='house-bot', icon_emoji=':robot_face:'
+        username='craig-bot', icon_emoji=':robot_face:'
     )
 
 
