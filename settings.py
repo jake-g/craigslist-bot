@@ -6,33 +6,32 @@ import os
 SLEEP_INTERVAL = 20 * 60  # 20 minutes
 START_DELAY = 10 * 60  # 10 minutes 
 
-
 # Which slack channel to post the listings into.
-SLACK_CHANNEL = "#bot"
-
+SLACK_CHANNEL = "#bike-bot"
+BOT_NAME = 'bike-bot'
+BOT_EMOJI = ':bike:'
 
 ## Location and Search preferences
 
 # Search filters (see craigslist.CraigslistHousing filters attribute)
 FILTERS = [
-    #{'bedrooms': 2, 'min_price': 1200, 'max_price': 1800},
-    {'min_bedrooms': 2, 'max_bedrooms': 3, 'min_price': 1800, 'max_price': 3300},
-    #{'bedrooms': 4, 'min_price': 2400, 'max_price': 3200},
+    # {'min_bedrooms': 2, 'max_bedrooms': 3, 'min_price': 1800, 'max_price': 3300},
+    {'query': '"road" (58 | 59 | 60 | 61 | 22 | 23)', 'min_price': 100, 'max_price': 800},
 ]
+#
+HOUSE_SEARCH = False
 
 # The Craigslist site you want to search on.
 # Ex: https://sfbay.craigslist.org is SF and the Bay Area.
-CRAIGSLIST_SITE = 'seattle'
+SITE = 'seattle'
 
 # What Craigslist subdirectories to search on (three letters.
 # Ex: https://sfbay.craigslist.org/eby/ is the East Bay, and https://sfbay.craigslist.org/sfc/ is San Francisco.
 AREAS = ["see"]
 
-
 # The Craigslist section underneath housing that you want to search in (3 letters.
-# Ex https://sfbay.craigslist.org/search/apa find apartments for rent
-CRAIGSLIST_HOUSING_SECTION = 'apa'
-
+# Ex https://sfbay.craigslist.org/search/apa for apartment or /bia for bike ect
+CATEGORY = 'bia'
 
 # A list of neighborhoods and coordinates that you want to look for apartments in.  Any listing that has coordinates
 # attached will be checked to see which area it is in.  If there's a match, it will be annotated with the area name.
@@ -78,6 +77,50 @@ BOXES = {
         [47.667564, -122.285128],
         [47.692297, -122.242899],
     ],
+    "downtown": [
+        [47.593360, -122.355113],
+        [47.617480, -122.322546]
+    ],
+    "capital hill": [
+        [47.606733, -122.327824],
+        [47.640772, -122.301673]
+    ],
+    "madison valley": [
+        [47.608362, -122.302016],
+        [47.642400, -122.275864]
+    ],
+    "queen anne": [
+        [47.618131, -122.417047],
+        [47.647061, -122.341809]
+    ],
+    "central district": [
+        [47.591094, -122.317495],
+        [47.609313, -122.281628]
+    ],
+    "south seattle": [
+        [47.536931, -122.337557],
+        [47.593198, -122.256414]
+    ],
+    "west seattle": [
+        [47.487232, -122.424211],
+        [47.600286, -122.348608]
+    ],
+    "north seattle": [
+        [47.755829, -122.439143],
+        [47.900693, -122.091753]
+    ],
+    "bellevue": [
+        [47.594642, -122.250895],
+        [47.683973, -122.089714]
+    ],
+    "bothell": [
+        [47.696081, -122.262352],
+        [47.785239, -122.137077]
+    ],
+    "mercer island": [
+        [47.525787, -122.246902],
+        [47.593974, -122.215127]
+    ]
 }
 
 # A list of neighborhood names to look for in the Craigslist neighborhood name field. If a listing doesn't fall into
@@ -86,13 +129,12 @@ BOXES = {
 # but it also catches listings that don't have coordinates (many listings are missing this info).
 NEIGHBORHOODS = ["wallingford", "eastlake", "fremont", "green lake", "roosevelt", "university district", "udist",
                  "montlake", "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
-                 "northgate", "ballard"]
+                 "northgate", "ballard", "capital hill", "queen anne", "bell town", "phinny", "shoreline",
+                 "madison", "lake forest"]
 
 ## Transit preferences
-
 # The farthest you want to live from a transit stop.
-MAX_TRANSIT_DIST = 2  # kilometers
-
+MAX_TRANSIT_DIST = None  # 2  # kilometers
 # Transit stations you want to check against.  Every coordinate here will be checked against each listing,
 # and the closest station name will be added to the result and posted into Slack.
 TRANSIT_STATIONS = {}
@@ -118,4 +160,3 @@ try:
     from config.private import *
 except Exception:
     pass
-

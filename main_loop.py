@@ -1,14 +1,15 @@
 import sys
 import time
 import traceback
+
 import settings
 from scraper import do_scrape
 
 if __name__ == "__main__":
-    # print("Waiting for %d seconds..." % settings.SLEEP_INTERVAL)
-    # time.sleep(settings.SLEEP_INTERVAL)
+    print("Waiting for %d seconds..." % settings.SLEEP_INTERVAL)
+    time.sleep(settings.SLEEP_INTERVAL)
     while True:
-        #print("{}: Starting scrape cycle".format(time.ctime()))
+        # print("{}: Starting scrape cycle".format(time.ctime()))
         try:
             do_scrape()
         except KeyboardInterrupt:
@@ -19,5 +20,5 @@ if __name__ == "__main__":
             traceback.print_exc()
         else:
             pass
-            #print("{}: Successfully finished scraping".format(time.ctime()))
+            # print("{}: Successfully finished scraping".format(time.ctime()))
         time.sleep(settings.SLEEP_INTERVAL)

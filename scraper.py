@@ -1,11 +1,13 @@
 import time
-from craigslist import CraigslistHousing
+
+from craigslist import CraigslistHousing, CraigslistForSale
 from dateutil.parser import parse
 from slackclient import SlackClient
 from sqlalchemy import Column, Integer, String, DateTime, Float
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+
 import settings
 from util import post_listing_to_slack, find_points_of_interest
 
@@ -37,14 +39,15 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
-def scrape_area(area, filter):
+def scrape_job(area, filter):
     # Scrapes craigslist area, and returns list of latest listings.
-
-    cl_h = CraigslistHousing(site=settings.CRAIGSLIST_SITE, area=area, category=settings.CRAIGSLIST_HOUSING_SECTION,
-                             filters=filter)
+    if settings.HOUSE_SEARCH:
+        cl_ = CraigslistHousing(site=settings.SITE, area=area, category=settings.CATEGORY, filters=filter)
+    else:
+        cl_ = CraigslistForSale(site=settings.SITE, area=area, category=settings.CATEGORY, filters=filter)
 
     results = []
-    gen = cl_h.get_results(sort_by='newest', geotagged=True, limit=20)
+    gen = cl_.get_results(sort_by='newest', geotagged=True, limit=20)
     while True:
         try:
             result = next(gen)
@@ -114,7 +117,7 @@ def do_scrape():
     all_results = []
     for area in settings.AREAS:
         for filter in settings.FILTERS:
-            all_results += scrape_area(area, filter)
+            all_results += scrape_job(area, filter)
 
     print("{}: Got {} results".format(time.ctime(), len(all_results)))
 

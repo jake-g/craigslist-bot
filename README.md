@@ -24,7 +24,54 @@ Before using this bot, you'll need a Slack team, a channel for the bot to post i
 * Get a Slack API token, which you can do [here](https://api.slack.com/docs/oauth-test-tokens).  [Here's](https://get.slack.help/hc/en-us/articles/215770388-Creating-and-regenerating-API-tokens) more information on the process.
 
 Configuration
---------------------
+-------------
+
+In general there is house scrape and for sale scrape, here are filters related
+
+Notes on filters
+```
+# generic filters 
+    base_filters = {
+        'query': {'url_key': 'query', 'value': None},
+        'search_titles': {'url_key': 'srchType', 'value': 'T'},
+        'has_image': {'url_key': 'hasPic', 'value': 1},
+        'posted_today': {'url_key': 'postedToday', 'value': 1},
+        'bundle_duplicates': {'url_key': 'bundleDuplicates', 'value': 1},
+        'search_distance': {'url_key': 'search_distance', 'value': None},
+        'zip_code': {'url_key': 'postal', 'value': None},
+    }
+
+# filters for sales:
+    extra_filters = {
+        'min_price': {'url_key': 'min_price', 'value': None},
+        'max_price': {'url_key': 'max_price', 'value': None},
+        'make': {'url_key': 'auto_make_model', 'value': None},
+        'model': {'url_key': 'auto_make_model', 'value': None},
+        'min_year': {'url_key': 'min_auto_year', 'value': None},
+        'max_year': {'url_key': 'max_auto_year', 'value': None},
+        'min_miles': {'url_key': 'min_auto_miles', 'value': None},
+        'max_miles': {'url_key': 'max_auto_miles', 'value': None},
+    }
+
+# filters for houses:
+    extra_filters = {
+        'private_room': {'url_key': 'private_room', 'value': 1},
+        'private_bath': {'url_key': 'private_bath', 'value': 1},
+        'cats_ok': {'url_key': 'pets_cat', 'value': 1},
+        'dogs_ok': {'url_key': 'pets_dog', 'value': 1},
+        'min_price': {'url_key': 'min_price', 'value': None},
+        'max_price': {'url_key': 'max_price', 'value': None},
+        'min_ft2': {'url_key': 'minSqft', 'value': None},
+        'max_ft2': {'url_key': 'maxSqft', 'value': None},
+        'min_bedrooms': {'url_key': 'min_bedrooms', 'value': None},
+        'max_bedrooms': {'url_key': 'max_bedrooms', 'value': None},
+        'min_bathrooms': {'url_key': 'min_bathrooms', 'value': None},
+        'max_bathrooms': {'url_key': 'max_bathrooms', 'value': None},
+        'no_smoking': {'url_key': 'no_smoking', 'value': 1},
+        'is_furnished': {'url_key': 'is_furnished', 'value': 1},
+        'wheelchair_acccess': {'url_key': 'wheelchaccess', 'value': 1},
+    }
+```
 
 ## Docker
 
