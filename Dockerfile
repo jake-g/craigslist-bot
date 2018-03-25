@@ -31,9 +31,9 @@ RUN pip3 install -r /tmp/requirements.txt
 
 COPY deployment/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN mkdir -p /opt/wwc
-ADD . /opt/wwc/apartment-finder
+ADD . /opt/wwc/craigslist-bot
 
 RUN mkdir -p /opt/wwc/logs
-RUN echo 'alias log="tail -f -n 1000 /opt/wwc/logs/afinder.log"' >> ~/.bashrc
-WORKDIR /opt/wwc/apartment-finder
+RUN echo 'alias log="tail -f -n 1000 /opt/wwc/logs/craigslist-bot.log"' >> ~/.bashrc
+WORKDIR /opt/wwc/craigslist-bot
 CMD ["/usr/bin/supervisord"]
