@@ -32,7 +32,8 @@ Description=Run craigslist bot
 User=root
 Group=dietpi
 Type=simple
-ExecStart=/usr/bin/python3 /opt/"$NAME"/main.py
+ExecStart=/usr/bin/python3 -u /opt/"$NAME"/main.py
+
 WorkingDirectory=/opt/"$NAME"/
 Environment=SLACK_TOKEN=xoxp-139047967344-139832954196-153246389329-865763cff4c1680419bcfd1a9005dac1
 Restart=always
