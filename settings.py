@@ -8,15 +8,19 @@ START_DELAY = 10 * 60  # 10 minutes
 
 # Which slack channel to post the listings into.
 SLACK_CHANNEL = "#bike-bot"
-BOT_NAME = 'bike-bot'
-BOT_EMOJI = ':bike:'
+BOT_NAME = 'music-bot'
+BOT_EMOJI = ':guitar:'
 
 ## Location and Search preferences
 
-# Search filters (see craigslist.CraigslistHousing filters attribute)
+# Search filters
 FILTERS = [
-    # {'min_bedrooms': 2, 'max_bedrooms': 3, 'min_price': 1800, 'max_price': 3300},
-    {'query': '"road" (58 | 59 | 60 | 61 | 22 | 23)', 'min_price': 100, 'max_price': 800},
+    {'query': '"pedal" -drum -kick -bass -sustain -damper -piano -board -bag -organ -grand -tuner -amp -synthesizer -synth -keyboard', 'min_price': 0, 'max_price': 150},
+    {'query': 'midi keyboard -casio -yamaha -technics -behringer', 'min_price': 0, 'max_price': 250},
+    {'query': 'Zoom R8', 'min_price': 0, 'max_price': 200},
+    {'query': 'SP (303 | 404 | 505)', 'min_price': 0, 'max_price': 400},
+    {'query': 'Critter and Guitari "Pocket Piano"', 'min_price': 0, 'max_price': 300},
+    {'query': 'Launchpad', 'min_price': 0, 'max_price': 50},
 ]
 #
 
@@ -30,7 +34,7 @@ AREAS = ["see"]
 
 # The Craigslist section underneath housing that you want to search in (3 letters.
 # Ex https://sfbay.craigslist.org/search/apa for apartment or /bia for bike ect
-CATEGORY = 'bia'
+CATEGORY = 'msa'
 HOUSE_SEARCH = False
 
 # A list of neighborhoods and coordinates that you want to look for apartments in.  Any listing that has coordinates
