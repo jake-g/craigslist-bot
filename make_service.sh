@@ -60,5 +60,5 @@ echo "Now you need to activate the service..."
 echo "Can add to : /DietPi/dietpi/.dietpi-services_include_exclude"
 echo "Can also start with: systemctl daemon-reload && systemctl enable "$NAME" && systemctl start "$NAME" --no-block"
 echo "View logs: systemctl status "$NAME""
-echo "Stream log with: journalctl --unit="$NAME" -n 100 --no-pager"
+echo "Stream log with: journalctl --unit="$NAME" -n 10 -f --no-pager"
 
