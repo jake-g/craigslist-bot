@@ -43,21 +43,22 @@ RestartSec=2
 WantedBy=multi-user.target" > "$DIR""$NAME"".service"
 
 # install script steps
-echo "sudo apt-get install -y python3" > "$DIR""setup.sh"
-echo "pip3 install setuptools" >> "$DIR""setup.sh"
-echo "pip3 install -r requirements.txt" >> "$DIR""setup.sh"
-echo "mkdir /opt/"$NAME"" >> "$DIR""setup.sh"
-echo "cp -r * /opt/"$NAME"" >> "$DIR""setup.sh"
-echo "cp "$NAME"".service" /lib/systemd/system/" >> "$DIR""setup.sh"
+echo "sudo apt-get install -y python3" > "$DIR""install.sh"
+echo "pip3 install setuptools" >> "$DIR""install.sh"
+echo "pip3 install -r requirements.txt" >> "$DIR""install.sh"
+echo "mkdir /opt/"$NAME"" >> "$DIR""install.sh"
+echo "cp -r * /opt/"$NAME"" >> "$DIR""install.sh"
+echo "cp "$NAME"".service" /lib/systemd/system/" >> "$DIR""install.sh"
 
 # uninstall script steps
 echo "sudo rm -rf /opt/"$NAME"" >> "$DIR""uninstall.sh"
 echo "sudo rm /lib/systemd/system/"$NAME"".service"" >> "$DIR""uninstall.sh"
 
 
-echo "Now you need to activate the service...\n"
+echo
+echo "Now you need to activate the service..."
 echo "Can add to : /DietPi/dietpi/.dietpi-services_include_exclude"
 echo "Can also start with: systemctl daemon-reload && systemctl enable "$NAME" && systemctl start "$NAME" --no-block"
 echo "View logs: systemctl status "$NAME""
-
+echo "Stream log with: journalctl --unit="$NAME" -n 100 --no-pager"
 

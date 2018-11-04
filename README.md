@@ -87,7 +87,12 @@ Notes on filters
 Installation + Usage
 --------------------
 
+## Linux Service
+### Works 2018, dietpi and any debian linux
+* see `make_service.sh` for setup and instructions
+
 ## Docker
+### Old: pre-2018
 
 * Make sure to do the steps in the configuration section above first.
 * Install Docker by following [these instructions](https://docs.docker.com/engine/installation/).
@@ -103,6 +108,7 @@ Troubleshooting
 ---------------------
 
 ## Docker
+### Old: pre-2018
 * see the `start_docker.sh` script
 * Use `docker ps` to get the id of the container running the bot.
 * Run `docker exec -it {YOUR_CONTAINER_ID} /bin/bash` to get a command shell inside the container.
@@ -113,8 +119,10 @@ Troubleshooting
 * Inspect the logs using `tail -f -n 1000 /opt/wwc/logs/craigslist-bot.log`. (dockerfile has alias for this: `log`)
 
 
+
 On Server (no docker)
 --------------------
+### Old: pre-2018
 1. Install pre-reqs
 ```
 apt-get update && apt-get -y install python3 python3-pip make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev zip git-core supervisor sqlite
