@@ -32,7 +32,7 @@ Description=Run craigslist bot
 User=root
 Group=dietpi
 Type=simple
-ExecStart=/usr/bin/python3 -u /opt/"$NAME"/main.py
+ExecStart=/usr/bin/python3 -u /opt/"$NAME"/main_loop.py
 
 WorkingDirectory=/opt/"$NAME"/
 Environment=SLACK_TOKEN=xoxp-139047967344-139832954196-153246389329-865763cff4c1680419bcfd1a9005dac1
@@ -44,9 +44,20 @@ WantedBy=multi-user.target" > "$DIR""$NAME"".service"
 
 # install script steps
 echo "sudo apt-get install -y python3" > "$DIR""setup.sh"
-echo "pip install -r requirements.txt" >> "$DIR""setup.sh"
+echo "pip3 install setuptools" >> "$DIR""setup.sh"
+echo "pip3 install -r requirements.txt" >> "$DIR""setup.sh"
 echo "mkdir /opt/"$NAME"" >> "$DIR""setup.sh"
 echo "cp -r * /opt/"$NAME"" >> "$DIR""setup.sh"
 echo "cp "$NAME"".service" /lib/systemd/system/" >> "$DIR""setup.sh"
+
+# uninstall script steps
+echo "sudo rm -rf /opt/"$NAME"" >> "$DIR""uninstall.sh"
+echo "sudo rm /lib/systemd/system/"$NAME"".service"" >> "$DIR""uninstall.sh"
+
+
+echo "Now you need to activate the service...\n"
+echo "Can add to : /DietPi/dietpi/.dietpi-services_include_exclude"
+echo "Can also start with: systemctl daemon-reload && systemctl enable "$NAME" && systemctl start "$NAME" --no-block"
+echo "View logs: systemctl status "$NAME""
 
 
