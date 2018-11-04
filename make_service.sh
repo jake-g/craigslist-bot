@@ -26,7 +26,7 @@ done
 
 # service file
 echo "[Unit]
-Description=Run craigslist bot
+Description="$NAME" system service
 
 [Service]
 User=root
