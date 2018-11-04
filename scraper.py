@@ -47,7 +47,7 @@ def scrape_job(area, filter):
         cl_ = CraigslistForSale(site=settings.SITE, area=area, category=settings.CATEGORY, filters=filter)
 
     results = []
-    gen = cl_.get_results(sort_by='newest', geotagged=True, limit=20)
+    gen = cl_.get_results(sort_by='newest', geotagged=True, limit=100)
     while True:
         try:
             result = next(gen)
