@@ -1,4 +1,5 @@
 #! /bin/bash
+echo 'probably need a new token: https://api.slack.com/custom-integrations/legacy-tokens'
 docker build -t craigslist . 
-docker run --name craig-bot-music --restart always -d -e SLACK_TOKENxoxp-139047967344-139832954196-470545154000-4a98d4b072a75ddbb07dee118689ba90 craigslist
+docker run --name craig-bot-music --restart always -d -e SLACK_TOKEN=xoxp-139047967344-139832954196-470683201665-7f1af731ddbcd0a6390e86f352aae108 craigslist
 docker exec -it craig-bot /bin/bash

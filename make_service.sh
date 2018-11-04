@@ -17,7 +17,7 @@ echo "Service folder: ""$DIR"
 
 # copy src files
 cp "$settings" "$DIR""settings.py"
-echo "SLACK_TOKEN='xoxp-139047967344-139832954196-470545154000-4a98d4b072a75ddbb07dee118689ba90'" >> "$DIR""settings.py"
+echo "SLACK_TOKEN='xoxp-139047967344-139832954196-470683201665-7f1af731ddbcd0a6390e86f352aae108'" >> "$DIR""settings.py"
 
 
 declare -a copy=("util.py" "scraper.py" "requirements.txt" "main_loop.py")

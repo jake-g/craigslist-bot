@@ -7,7 +7,7 @@ SLEEP_INTERVAL = 20 * 60  # 20 minutes
 START_DELAY = 10 * 60  # 10 minutes
 
 # Which slack channel to post the listings into.
-SLACK_CHANNEL = "#bike-bot"
+SLACK_CHANNEL = "#music-bot"
 BOT_NAME = 'music-bot'
 BOT_EMOJI = ':guitar:'
 
