@@ -17,6 +17,9 @@ echo "Service folder: ""$DIR"
 
 # copy src files
 cp "$settings" "$DIR""settings.py"
+echo "SLACK_TOKEN='xoxp-139047967344-139832954196-153246389329-865763cff4c1680419bcfd1a9005dac1'" >> "$DIR""settings.py"
+
+
 declare -a copy=("util.py" "scraper.py" "requirements.txt" "main_loop.py")
 for i in "${copy[@]}"
 do
@@ -41,6 +44,7 @@ RestartSec=2
 
 [Install]
 WantedBy=multi-user.target" > "$DIR""$NAME"".service"
+
 
 # install script steps
 echo "sudo apt-get install -y python3" > "$DIR""install.sh"
