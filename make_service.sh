@@ -35,7 +35,7 @@ Type=simple
 ExecStart=/usr/bin/python3 -u /opt/"$NAME"/main_loop.py
 
 WorkingDirectory=/opt/"$NAME"/
-Environment=SLACK_TOKEN=xoxp-139047967344-139832954196-153246389329-865763cff4c1680419bcfd1a9005dac1
+Environment=SLACK_TOKEN=xoxp-139047967344-139832954196-470545154000-4a98d4b072a75ddbb07dee118689ba90
 Restart=always
 RestartSec=2
 
@@ -61,4 +61,6 @@ echo "Can add to : /DietPi/dietpi/.dietpi-services_include_exclude"
 echo "Can also start with: systemctl daemon-reload && systemctl enable "$NAME" && systemctl start "$NAME" --no-block"
 echo "View logs: systemctl status "$NAME""
 echo "Stream log with: journalctl --unit="$NAME" -n 10 -f --no-pager"
+
+echo "alias $NAME='journalctl --unit="$NAME" -n 10 -f --no-pager'" >> ~/.bashrc
 
