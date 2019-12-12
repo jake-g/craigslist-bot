@@ -2,7 +2,7 @@ import time
 
 from craigslist import CraigslistHousing, CraigslistForSale
 from dateutil.parser import parse
-from slackclient import SlackClient
+from slack import WebClient
 from sqlalchemy import Column, Integer, String, DateTime, Float
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -111,7 +111,7 @@ def scrape_job(area, filter):
 
 def do_scrape():
     # Posts craigslist scraper results to slack.
-    sc = SlackClient(settings.SLACK_TOKEN)
+    sc = WebClient(token=settings.SLACK_TOKEN)
 
     # Get all the results from craigslist.
     all_results = []
