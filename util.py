@@ -22,8 +22,8 @@ def in_box(coords, box):
 def post_listing_to_slack(sc, listing):
     # Post listing to slack client (sc)
     desc = "{0} | {1} | {2} | <{3}>".format(listing["area"], listing["price"], listing["name"], listing["url"])
-    sc.api_call(
-        "chat.postMessage", channel=settings.SLACK_CHANNEL, text=desc,
+    sc.chat_postMessage(
+        channel=settings.SLACK_CHANNEL, text=desc,
         username=settings.BOT_NAME, icon_emoji=settings.BOT_EMOJI
     )
 
