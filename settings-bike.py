@@ -4,7 +4,6 @@ import os
 
 # How long we should sleep between scrapes of Craigslist. Too fast may get rate limited, too slow may miss listings.
 SLEEP_INTERVAL = 20 * 60  # 20 minutes
-START_DELAY = 10 * 60  # 10 minutes
 
 # Which slack channel to post the listings into.
 SLACK_CHANNEL = "#bike-bot"
