@@ -6,7 +6,7 @@ import os
 SLEEP_INTERVAL = 20 * 60  # 20 minutes
 
 # Which slack channel to post the listings into.
-SLACK_CHANNEL = "#test"
+SLACK_CHANNEL = "#house-bot"
 BOT_NAME = 'house-bot'
 BOT_EMOJI = ':house:'
 
