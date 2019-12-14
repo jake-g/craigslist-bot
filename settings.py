@@ -4,23 +4,16 @@ import os
 
 # How long we should sleep between scrapes of Craigslist. Too fast may get rate limited, too slow may miss listings.
 SLEEP_INTERVAL = 20 * 60  # 20 minutes
-START_DELAY = 10 * 60  # 10 minutes
 
 # Which slack channel to post the listings into.
-SLACK_CHANNEL = "#bike-bot"
-BOT_NAME = 'music-bot'
-BOT_EMOJI = ':guitar:'
+SLACK_CHANNEL = "#test"
+BOT_NAME = 'house-bot'
+BOT_EMOJI = ':house:'
 
 ## Location and Search preferences
-
-# Search filters
+# Search filters (see craigslist.CraigslistHousing filters attribute)
 FILTERS = [
-    {'query': '"pedal" -drum -kick -bass -sustain -damper -piano -board -bag -organ -grand -tuner -amp -synthesizer -synth -keyboard', 'min_price': 0, 'max_price': 150},
-    {'query': 'midi keyboard -casio -yamaha -technics -behringer', 'min_price': 0, 'max_price': 250},
-    {'query': 'Zoom R8', 'min_price': 0, 'max_price': 200},
-    {'query': 'SP (303 | 404 | 505)', 'min_price': 0, 'max_price': 400},
-    {'query': 'Critter and Guitari "Pocket Piano"', 'min_price': 0, 'max_price': 300},
-    {'query': 'Launchpad', 'min_price': 0, 'max_price': 50},
+    {'min_bedrooms': 2, 'max_bedrooms': 3, 'min_price': 1000, 'max_price': 3000},
 ]
 #
 
@@ -34,25 +27,13 @@ AREAS = ["see"]
 
 # The Craigslist section underneath housing that you want to search in (3 letters.
 # Ex https://sfbay.craigslist.org/search/apa for apartment or /bia for bike ect
-CATEGORY = 'msa'
-HOUSE_SEARCH = False
+CATEGORY = 'apa'
+HOUSE_SEARCH = True # use for apa or other housing categories
 
 # A list of neighborhoods and coordinates that you want to look for apartments in.  Any listing that has coordinates
 # attached will be checked to see which area it is in.  If there's a match, it will be annotated with the area name.
 #  Ex: "neighborhood": [[bottom left lat, long],[top right lat, long]],
 BOXES = {
-    "university_district": [
-        [47.652653, -122.321177],
-        [47.668007, -122.290192],
-    ],
-    "northgate": [
-        [47.686806, -122.325211],
-        [47.707141, -122.304268],
-    ],
-    "ravenna": [
-        [47.668585, -122.320404],
-        [47.682686, -122.290707],
-    ],
     "wallingford": [
         [47.645459, -122.345982],
         [47.664423, -122.323666],
@@ -65,76 +46,96 @@ BOXES = {
         [47.649623, -122.365894],
         [47.664076, -122.347870],
     ],
-    "montlake": [
-        [47.631464, -122.311649],
-        [47.646732, -122.279549],
-    ],
-    "eastlake": [
-        [47.632505, -122.327957],
-        [47.651589, -122.317142],
-    ],
-    "laurelhurst": [
-        [47.649700, -122.289419],
-        [47.667275, -122.254829],
-    ],
-    "north_east": [
-        [47.667564, -122.285128],
-        [47.692297, -122.242899],
-    ],
-    "downtown": [
-        [47.593360, -122.355113],
-        [47.617480, -122.322546]
-    ],
-    "capital hill": [
-        [47.606733, -122.327824],
-        [47.640772, -122.301673]
-    ],
-    "madison valley": [
-        [47.608362, -122.302016],
-        [47.642400, -122.275864]
-    ],
-    "queen anne": [
+    "queen_anne": [
         [47.618131, -122.417047],
         [47.647061, -122.341809]
     ],
-    "central district": [
-        [47.591094, -122.317495],
-        [47.609313, -122.281628]
+    "ballard": [
+        [47.661987, -122.407393,],
+        [47.684377, -122.363013]
     ],
-    "south seattle": [
-        [47.536931, -122.337557],
-        [47.593198, -122.256414]
-    ],
-    "west seattle": [
-        [47.487232, -122.424211],
-        [47.600286, -122.348608]
-    ],
-    "north seattle": [
-        [47.755829, -122.439143],
-        [47.900693, -122.091753]
-    ],
-    "bellevue": [
-        [47.594642, -122.250895],
-        [47.683973, -122.089714]
-    ],
-    "bothell": [
-        [47.696081, -122.262352],
-        [47.785239, -122.137077]
-    ],
-    "mercer island": [
-        [47.525787, -122.246902],
-        [47.593974, -122.215127]
+    "phinney_ridge": [
+        [47.661987, -122.375096],
+        [47.684377, -122.347799	]
     ]
+    # "university_district": [
+    #     [47.652653, -122.321177],
+    #     [47.668007, -122.290192],
+    # ],
+    # "northgate": [
+    #     [47.686806, -122.325211],
+    #     [47.707141, -122.304268],
+    # ],
+    # "ravenna": [
+    #     [47.668585, -122.320404],
+    #     [47.682686, -122.290707],
+    # ],
+    # "montlake": [
+    #     [47.631464, -122.311649],
+    #     [47.646732, -122.279549],
+    # ],
+    # "eastlake": [
+    #     [47.632505, -122.327957],
+    #     [47.651589, -122.317142],
+    # ],
+    # "laurelhurst": [
+    #     [47.649700, -122.289419],
+    #     [47.667275, -122.254829],
+    # ],
+    # "north_east": [
+    #     [47.667564, -122.285128],
+    #     [47.692297, -122.242899],
+    # ],
+    # "downtown": [
+    #     [47.593360, -122.355113],
+    #     [47.617480, -122.322546]
+    # ],
+    # "capital hill": [
+    #     [47.606733, -122.327824],
+    #     [47.640772, -122.301673]
+    # ],
+    # "madison valley": [
+    #     [47.608362, -122.302016],
+    #     [47.642400, -122.275864]
+    # ],
+    # "central district": [
+    #     [47.591094, -122.317495],
+    #     [47.609313, -122.281628]
+    # ],
+    # "south seattle": [
+    #     [47.536931, -122.337557],
+    #     [47.593198, -122.256414]
+    # ],
+    # "west seattle": [
+    #     [47.487232, -122.424211],
+    #     [47.600286, -122.348608]
+    # ],
+    # "north seattle": [
+    #     [47.755829, -122.439143],
+    #     [47.900693, -122.091753]
+    # ],
+    # "bellevue": [
+    #     [47.594642, -122.250895],
+    #     [47.683973, -122.089714]
+    # ],
+    # "bothell": [
+    #     [47.696081, -122.262352],
+    #     [47.785239, -122.137077]
+    # ],
+    # "mercer island": [
+    #     [47.525787, -122.246902],
+    #     [47.593974, -122.215127]
+    # ]
 }
 
 # A list of neighborhood names to look for in the Craigslist neighborhood name field. If a listing doesn't fall into
 # one of the boxes you defined, it will be checked to see if the neighborhood name it was listed under matches one
 # of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
 # but it also catches listings that don't have coordinates (many listings are missing this info).
-NEIGHBORHOODS = ["wallingford", "eastlake", "fremont", "green lake", "roosevelt", "university district", "udist",
-                 "montlake", "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
-                 "northgate", "ballard", "capital hill", "queen anne", "bell town", "phinny", "shoreline",
-                 "madison", "lake forest"]
+NEIGHBORHOODS = ["wallingford", "eastlake", "fremont", "green lake",  "ballard", "queen anne", "phinney ridge"]
+                 #"capital hill", "bell town", "phinny", "shoreline", "madison", "lake forest"]
+                 #  "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
+                 #  "northgate",
 
 ## Transit preferences
 # The farthest you want to live from a transit stop.
