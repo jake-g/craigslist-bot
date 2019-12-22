@@ -55,12 +55,14 @@ def scrape_job(area, filter):
             break
         except Exception:
             continue
-        listing = session.query(Listing).filter_by(cl_id=result["id"]).first()
 
         # Don't store the listing if it already exists.
-        if listing is None:
+        if session.query(Listing).filter_by(cl_id=result["id"]).first() is None:
             if result["where"] is None:
                 # If there is no string identifying which neighborhood the result is from, skip it.
+                continue
+            if any(tok in result["name"].lower() for tok in settings.BLACKLIST_TOKENS):
+                # print('%s contains invalid tokens' % result['name'])
                 continue
 
             lat = 0

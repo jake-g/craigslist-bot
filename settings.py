@@ -13,9 +13,12 @@ BOT_EMOJI = ':house:'
 ## Location and Search preferences
 # Search filters (see craigslist.CraigslistHousing filters attribute)
 FILTERS = [
-    {'min_bedrooms': 2, 'max_bedrooms': 3, 'min_price': 1000, 'max_price': 3000},
+    {'min_bedrooms': 2, 'max_bedrooms': 3, 'min_price': 1500, 'max_price': 3000},
 ]
 #
+
+# Ignore if post has these tokens in the posting
+BLACKLIST_TOKENS = ['apt', 'apartment', 'townhome', 'townhouse', 'duplex', 'condo', 'unit']
 
 # The Craigslist site you want to search on.
 # Ex: https://sfbay.craigslist.org is SF and the Bay Area.
@@ -46,10 +49,6 @@ BOXES = {
         [47.649623, -122.365894],
         [47.664076, -122.347870],
     ],
-    "queen_anne": [
-        [47.618131, -122.417047],
-        [47.647061, -122.341809]
-    ],
     "ballard": [
         [47.661987, -122.407393,],
         [47.684377, -122.363013]
@@ -57,7 +56,11 @@ BOXES = {
     "phinney_ridge": [
         [47.661987, -122.375096],
         [47.684377, -122.347799	]
-    ]
+    ],
+    # "queen_anne": [
+    #     [47.618131, -122.417047],
+    #     [47.647061, -122.341809]
+    # ],
     # "university_district": [
     #     [47.652653, -122.321177],
     #     [47.668007, -122.290192],
@@ -132,10 +135,10 @@ BOXES = {
 # one of the boxes you defined, it will be checked to see if the neighborhood name it was listed under matches one
 # of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
 # but it also catches listings that don't have coordinates (many listings are missing this info).
-NEIGHBORHOODS = ["wallingford", "eastlake", "fremont", "green lake",  "ballard", "queen anne", "phinney ridge"]
+NEIGHBORHOODS = ["wallingford", "fremont", "green lake",  "ballard", "phinney ridge"]
                  #"capital hill", "bell town", "phinny", "shoreline", "madison", "lake forest"]
                  #  "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
-                 #  "northgate",
+                 #  "northgate","eastlake","queen anne",
 
 ## Transit preferences
 # The farthest you want to live from a transit stop.
