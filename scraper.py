@@ -7,7 +7,8 @@ from sqlalchemy import Column, Integer, String, DateTime, Float
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
+import requests
+from bs4 import BeautifulSoup
 import settings
 from util import post_listing_to_slack, find_points_of_interest
 
@@ -31,6 +32,7 @@ class Listing(Base):
     cl_id = Column(Integer, unique=True)
     area = Column(String)
     transit_stop = Column(String)
+    # description = Column(String)
 
 
 Base.metadata.create_all(engine)
@@ -62,7 +64,6 @@ def scrape_job(area, filter):
                 # If there is no string identifying which neighborhood the result is from, skip it.
                 continue
             if any(tok in result["name"].lower() for tok in settings.BLACKLIST_TOKENS):
-                # print('%s contains invalid tokens' % result['name'])
                 continue
 
             lat = 0
@@ -86,6 +87,19 @@ def scrape_job(area, filter):
             except Exception:
                 pass
 
+            # Try parsing description.
+            result["description"] = ''
+            try:
+                response = requests.get(result["url"], headers={'User-Agent': settings.USERAGENT})
+                soup = BeautifulSoup(response.text, 'html.parser')
+                # TODO can also parse image urls here and other in post content.
+                desc = str(soup.find('section', {'id': 'postingbody'}).text)
+                result["description"] = desc.replace('QR Code Link to This Post', '').strip()
+                if any(tok in desc.lower() for tok in settings.BLACKLIST_TOKENS):
+                    continue
+            except Exception:
+                pass
+
             # Create the listing object.
             listing = Listing(
                 link=result["url"],
@@ -97,7 +111,8 @@ def scrape_job(area, filter):
                 location=result["where"],
                 cl_id=result["id"],
                 area=result["area"],
-                transit_stop=result["transit"]
+                transit_stop=result["transit"],
+                # description=result["description"]
             )
 
             # Save the listing so we don't grab it again.

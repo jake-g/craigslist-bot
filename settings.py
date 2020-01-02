@@ -20,6 +20,9 @@ FILTERS = [
 # Ignore if post has these tokens in the posting
 BLACKLIST_TOKENS = ['apt', 'apartment', 'townhome', 'townhouse', 'duplex', 'condo', 'unit']
 
+# Fake a browser for scraping the description
+USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
+
 # The Craigslist site you want to search on.
 # Ex: https://sfbay.craigslist.org is SF and the Bay Area.
 SITE = 'seattle'
@@ -31,7 +34,7 @@ AREAS = ["see"]
 # The Craigslist section underneath housing that you want to search in (3 letters.
 # Ex https://sfbay.craigslist.org/search/apa for apartment or /bia for bike ect
 CATEGORY = 'apa'
-HOUSE_SEARCH = True # use for apa or other housing categories
+HOUSE_SEARCH = True  # use for apa or other housing categories
 
 # A list of neighborhoods and coordinates that you want to look for apartments in.  Any listing that has coordinates
 # attached will be checked to see which area it is in.  If there's a match, it will be annotated with the area name.
@@ -50,12 +53,12 @@ BOXES = {
         [47.664076, -122.347870],
     ],
     "ballard": [
-        [47.661987, -122.407393,],
+        [47.661987, -122.407393, ],
         [47.684377, -122.363013]
     ],
     "phinney_ridge": [
         [47.661987, -122.375096],
-        [47.684377, -122.347799	]
+        [47.684377, -122.347799]
     ],
     # "queen_anne": [
     #     [47.618131, -122.417047],
@@ -135,10 +138,10 @@ BOXES = {
 # one of the boxes you defined, it will be checked to see if the neighborhood name it was listed under matches one
 # of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
 # but it also catches listings that don't have coordinates (many listings are missing this info).
-NEIGHBORHOODS = ["wallingford", "fremont", "green lake",  "ballard", "phinney ridge"]
-                 #"capital hill", "bell town", "phinny", "shoreline", "madison", "lake forest"]
-                 #  "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
-                 #  "northgate","eastlake","queen anne",
+NEIGHBORHOODS = ["wallingford", "fremont", "green lake", "ballard", "phinney ridge"]
+# "capital hill", "bell town", "phinny", "shoreline", "madison", "lake forest"]
+#  "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
+#  "northgate","eastlake","queen anne",
 
 ## Transit preferences
 # The farthest you want to live from a transit stop.

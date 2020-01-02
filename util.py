@@ -19,13 +19,23 @@ def in_box(coords, box):
     return False
 
 
-def post_listing_to_slack(sc, listing):
+def post_listing_to_slack(sc, listing, reply_description=True):
     # Post listing to slack client (sc)
-    desc = "{0} | {1} | {2} | <{3}>".format(listing["area"], listing["price"], listing["name"], listing["url"])
-    sc.chat_postMessage(
-        channel=settings.SLACK_CHANNEL, text=desc,
+    post_str = "{0} | {1} | {2} | <{3}>".format(listing["area"], listing["price"], listing["name"], listing["url"])
+    post_response = sc.chat_postMessage(
+        channel=settings.SLACK_CHANNEL, text=post_str,
         username=settings.BOT_NAME, icon_emoji=settings.BOT_EMOJI
     )
+
+    # Reply to a thread with description
+    post_ts = post_response.data.get('ts', None)
+    if reply_description and post_ts:
+        reply_response = sc.chat_postMessage(
+            channel=settings.SLACK_CHANNEL,
+            text='```{0}```'.format(listing["description"]),
+            username='description-bot', icon_emoji=':spiral_note_pad:',
+            thread_ts=post_ts
+        )
 
 
 def find_points_of_interest(geotag, location):
