@@ -6,15 +6,14 @@ import os
 SLEEP_INTERVAL = 20 * 60  # 20 minutes
 
 # Which slack channel to post the listings into.
-SLACK_CHANNEL = "#test"
+SLACK_CHANNEL = "#house-bot"
 BOT_NAME = 'house-bot'
 BOT_EMOJI = ':house:'
 
 ## Location and Search preferences
 # Search filters (see craigslist.CraigslistHousing filters attribute)
 FILTERS = [
-    {'min_bedrooms': 2, 'max_bedrooms': 3, 'min_price': 1000, 'max_price': 3300},
-    # {'query': '"road" (58 | 59 | 60 | 61 | 22 | 23)', 'min_price': 100, 'max_price': 800},
+    {'min_bedrooms': 2, 'max_bedrooms': 3, 'min_price': 1500, 'max_price': 3000},
 ]
 #
 
@@ -35,18 +34,6 @@ HOUSE_SEARCH = True # use for apa or other housing categories
 # attached will be checked to see which area it is in.  If there's a match, it will be annotated with the area name.
 #  Ex: "neighborhood": [[bottom left lat, long],[top right lat, long]],
 BOXES = {
-    "university_district": [
-        [47.652653, -122.321177],
-        [47.668007, -122.290192],
-    ],
-    "northgate": [
-        [47.686806, -122.325211],
-        [47.707141, -122.304268],
-    ],
-    "ravenna": [
-        [47.668585, -122.320404],
-        [47.682686, -122.290707],
-    ],
     "wallingford": [
         [47.645459, -122.345982],
         [47.664423, -122.323666],
@@ -59,18 +46,42 @@ BOXES = {
         [47.649623, -122.365894],
         [47.664076, -122.347870],
     ],
-    "montlake": [
-        [47.631464, -122.311649],
-        [47.646732, -122.279549],
+    "ballard": [
+        [47.661987, -122.407393,],
+        [47.684377, -122.363013]
     ],
-    "eastlake": [
-        [47.632505, -122.327957],
-        [47.651589, -122.317142],
+    "phinney_ridge": [
+        [47.661987, -122.375096],
+        [47.684377, -122.347799	]
     ],
-    "laurelhurst": [
-        [47.649700, -122.289419],
-        [47.667275, -122.254829],
-    ],
+    # "queen_anne": [
+    #     [47.618131, -122.417047],
+    #     [47.647061, -122.341809]
+    # ],
+    # "university_district": [
+    #     [47.652653, -122.321177],
+    #     [47.668007, -122.290192],
+    # ],
+    # "northgate": [
+    #     [47.686806, -122.325211],
+    #     [47.707141, -122.304268],
+    # ],
+    # "ravenna": [
+    #     [47.668585, -122.320404],
+    #     [47.682686, -122.290707],
+    # ],
+    # "montlake": [
+    #     [47.631464, -122.311649],
+    #     [47.646732, -122.279549],
+    # ],
+    # "eastlake": [
+    #     [47.632505, -122.327957],
+    #     [47.651589, -122.317142],
+    # ],
+    # "laurelhurst": [
+    #     [47.649700, -122.289419],
+    #     [47.667275, -122.254829],
+    # ],
     # "north_east": [
     #     [47.667564, -122.285128],
     #     [47.692297, -122.242899],
@@ -86,10 +97,6 @@ BOXES = {
     # "madison valley": [
     #     [47.608362, -122.302016],
     #     [47.642400, -122.275864]
-    # ],
-    # "queen anne": [
-    #     [47.618131, -122.417047],
-    #     [47.647061, -122.341809]
     # ],
     # "central district": [
     #     [47.591094, -122.317495],
@@ -125,10 +132,10 @@ BOXES = {
 # one of the boxes you defined, it will be checked to see if the neighborhood name it was listed under matches one
 # of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
 # but it also catches listings that don't have coordinates (many listings are missing this info).
-NEIGHBORHOODS = ["wallingford", "eastlake", "fremont", "green lake", "roosevelt", "university district", "udist",
-                 "montlake", "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
-                 "northgate", "ballard"]
-                 #"capital hill", "queen anne", "bell town", "phinny", "shoreline", "madison", "lake forest"]
+NEIGHBORHOODS = ["wallingford", "fremont", "green lake",  "ballard", "phinney ridge"]
+                 #"capital hill", "bell town", "phinny", "shoreline", "madison", "lake forest"]
+                 #  "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
+                 #  "northgate","eastlake","queen anne",
 
 ## Transit preferences
 # The farthest you want to live from a transit stop.
