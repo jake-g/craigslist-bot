@@ -1,7 +1,7 @@
 old/
 .DS_Store
 *.zip
-
+*sync-conflict*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

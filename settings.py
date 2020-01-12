@@ -18,7 +18,7 @@ FILTERS = [
 #
 
 # Ignore if post has these tokens in the posting
-BLACKLIST_TOKENS = ['apt', 'apartment', 'townhome', 'townhouse', 'duplex', 'condo', 'unit']
+BLACKLIST_TOKENS = ['apt', 'apartment', 'townhome', 'townhouse', 'duplex', 'condo', 'unit', 'cornellandassociates']
 
 # Fake a browser for scraping the description
 USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
