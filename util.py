@@ -24,7 +24,8 @@ def post_listing_to_slack(sc, listing, reply_description=True):
     post_str = "{0} | {1} | {2} | <{3}>".format(listing["area"], listing["price"], listing["name"], listing["url"])
     post_response = sc.chat_postMessage(
         channel=settings.SLACK_CHANNEL, text=post_str,
-        username=settings.BOT_NAME, icon_emoji=settings.BOT_EMOJI
+        username=settings.BOT_NAME, icon_emoji=settings.BOT_EMOJI,
+        unfurl_links=True, unfurl_media=True
     )
 
     # Reply to a thread with description
@@ -34,7 +35,7 @@ def post_listing_to_slack(sc, listing, reply_description=True):
             channel=settings.SLACK_CHANNEL,
             text='```{0}```'.format(listing["description"]),
             username='description-bot', icon_emoji=':spiral_note_pad:',
-            thread_ts=post_ts
+            thread_ts=post_ts, unfurl_links=True, unfurl_media=True
         )
 
 

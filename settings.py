@@ -15,7 +15,6 @@ BOT_EMOJI = ':house:'
 FILTERS = [
     {'min_bedrooms': 2, 'max_bedrooms': 3, 'min_price': 1500, 'max_price': 3000},
 ]
-#
 
 # Ignore if post has these tokens in the posting
 BLACKLIST_TOKENS = ['apt', 'apartment', 'townhome', 'townhouse', 'duplex', 'condo', 'unit', 'cornellandassociates']

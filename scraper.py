@@ -140,4 +140,4 @@ def do_scrape():
 
     # Post to slack.
     for result in all_results:
-        post_listing_to_slack(sc, result)
+        post_listing_to_slack(sc, result, reply_description=False)

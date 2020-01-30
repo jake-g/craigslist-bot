@@ -6,8 +6,8 @@ import settings
 from scraper import do_scrape
 
 if __name__ == "__main__":
-    print("Waiting for %d seconds..." % settings.SLEEP_INTERVAL)
-    time.sleep(settings.SLEEP_INTERVAL)
+    # print("Waiting for %d seconds..." % settings.SLEEP_INTERVAL)
+    # time.sleep(settings.SLEEP_INTERVAL)
     while True:
         # print("{}: Starting scrape cycle".format(time.ctime()))
         try:
