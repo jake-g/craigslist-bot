@@ -2,25 +2,27 @@ import os
 
 ## System settings
 
-# How long we should sleep between scrapes of Craigslist. Too fast may get rate limited, too slow may miss listings.
-SLEEP_INTERVAL = 20 * 60  # 20 minutes
+
+# Fake a browser for scraping the description
+USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
 
 # Which slack channel to post the listings into.
 SLACK_CHANNEL = "#house-bot"
 BOT_NAME = 'house-bot'
 BOT_EMOJI = ':house:'
 
+
+# How long we should sleep between scrapes of Craigslist. Too fast may get rate limited, too slow may miss listings.
+SLEEP_INTERVAL = 20 * 60  # 20 minutes
+
 ## Location and Search preferences
 # Search filters (see craigslist.CraigslistHousing filters attribute)
 FILTERS = [
-    {'min_bedrooms': 2, 'max_bedrooms': 3, 'min_price': 1500, 'max_price': 3000},
+    {'min_bedrooms': 2, 'max_bedrooms': 4, 'min_price': 1500, 'max_price': 3000},
 ]
 
 # Ignore if post has these tokens in the posting
 BLACKLIST_TOKENS = ['apt', 'apartment', 'townhome', 'townhouse', 'duplex', 'condo', 'unit', 'cornellandassociates']
-
-# Fake a browser for scraping the description
-USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
 
 # The Craigslist site you want to search on.
 # Ex: https://sfbay.craigslist.org is SF and the Bay Area.
@@ -34,6 +36,15 @@ AREAS = ["see"]
 # Ex https://sfbay.craigslist.org/search/apa for apartment or /bia for bike ect
 CATEGORY = 'apa'
 HOUSE_SEARCH = True  # use for apa or other housing categories
+
+# A list of neighborhood names to look for in the Craigslist neighborhood name field. If a listing doesn't fall into
+# one of the boxes you defined, it will be checked to see if the neighborhood name it was listed under matches one
+# of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
+# but it also catches listings that don't have coordinates (many listings are missing this info).
+NEIGHBORHOODS = ["wallingford", "fremont", "green lake", "ballard", "phinney ridge", "east lake"]
+# "capital hill", "bell town", "phinny", "shoreline", "madison", "lake forest"]
+#  "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
+#  "northgate","eastlake","queen anne",
 
 # A list of neighborhoods and coordinates that you want to look for apartments in.  Any listing that has coordinates
 # attached will be checked to see which area it is in.  If there's a match, it will be annotated with the area name.
@@ -59,6 +70,15 @@ BOXES = {
         [47.661987, -122.375096],
         [47.684377, -122.347799]
     ],
+    "eastlake": [
+        [47.632505, -122.327957],
+        [47.651589, -122.317142],
+    ],
+    "montlake": [
+        [47.631464, -122.311649],
+        [47.646732, -122.279549],
+    ]
+}
     # "queen_anne": [
     #     [47.618131, -122.417047],
     #     [47.647061, -122.341809]
@@ -75,14 +95,7 @@ BOXES = {
     #     [47.668585, -122.320404],
     #     [47.682686, -122.290707],
     # ],
-    # "montlake": [
-    #     [47.631464, -122.311649],
-    #     [47.646732, -122.279549],
-    # ],
-    # "eastlake": [
-    #     [47.632505, -122.327957],
-    #     [47.651589, -122.317142],
-    # ],
+
     # "laurelhurst": [
     #     [47.649700, -122.289419],
     #     [47.667275, -122.254829],
@@ -133,14 +146,6 @@ BOXES = {
     # ]
 }
 
-# A list of neighborhood names to look for in the Craigslist neighborhood name field. If a listing doesn't fall into
-# one of the boxes you defined, it will be checked to see if the neighborhood name it was listed under matches one
-# of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
-# but it also catches listings that don't have coordinates (many listings are missing this info).
-NEIGHBORHOODS = ["wallingford", "fremont", "green lake", "ballard", "phinney ridge"]
-# "capital hill", "bell town", "phinny", "shoreline", "madison", "lake forest"]
-#  "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
-#  "northgate","eastlake","queen anne",
 
 ## Transit preferences
 # The farthest you want to live from a transit stop.
