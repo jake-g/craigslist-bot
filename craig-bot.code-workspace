@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+            "name": "craig-bot",
+            "path": "."
+        },
+		{
+			"name": "SSH FS - craig-bot",
+			"uri": "ssh://craig-bot/root/craig-bot"
+		}
+	]
+}

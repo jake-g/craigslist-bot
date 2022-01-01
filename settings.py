@@ -16,7 +16,7 @@ SLEEP_INTERVAL = 40 * 60  # 20 minutes
 ## Location and Search preferences
 # Search filters (see craigslist.CraigslistHousing filters attribute)
 FILTERS = [
-    {'min_bedrooms': 2, 'max_bedrooms': 4, 'min_price': 1700, 'max_price': 3300},
+    {'min_bedrooms': 1, 'max_bedrooms': 3, 'min_price': 1200, 'max_price': 2500},
 ]
 
 # Ignore if post has these tokens in the posting
@@ -42,10 +42,8 @@ HOUSE_SEARCH = True  # use for apa or other housing categories
 # of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
 # but it also catches listings that don't have coordinates (many listings are missing this info).
 NEIGHBORHOODS = ["wallingford", "fremont", "green lake", "ballard", "phinney ridge", "east lake", 
-                "greenlake", "greenwood", "eastlake", "maple leaf", "north gate", "queen anne"]
-# "capital hill", "bell town", "phinny", "shoreline", "madison", "lake forest"]
-#  "hawthorne hills", "greenlake", "greenwood", "laurelhurst", "uw", "ravenna",
-#  "northgate","eastlake","queen anne",
+                "greenlake", "greenwood", "eastlake", "maple leaf", "north gate", "queen anne", 
+                "laurelhurst", "uw", "ravenna", "northgate", "phinny", "mapleleaf"]
 
 # A list of neighborhoods and coordinates that you want to look for rentals in.  Any listing that has coordinates
 # attached will be checked to see which area it is in.  If there's a match, it will be annotated with the area name.
@@ -87,16 +85,14 @@ BOXES = {
         [47.618131, -122.417047],
         [47.647061, -122.341809]
     ],
-}
-
-    # "university_district": [
-    #     [47.652653, -122.321177],
-    #     [47.668007, -122.290192],
-    # ],
-    # "ravenna": [
-    #     [47.668585, -122.320404],
-    #     [47.682686, -122.290707],
-    # ],
+    "university_district": [
+        [47.652653, -122.321177],
+        [47.668007, -122.290192],
+    ],
+    "ravenna": [
+        [47.668585, -122.320404],
+        [47.682686, -122.290707],
+    ],
 
     # "laurelhurst": [
     #     [47.649700, -122.289419],
