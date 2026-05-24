@@ -11,6 +11,8 @@ import requests
 from bs4 import BeautifulSoup
 import settings
 from util import post_listing_to_slack, find_points_of_interest
+import os
+from datetime import date
 
 engine = create_engine('sqlite:///listings.db', echo=False)
 
@@ -47,28 +49,42 @@ def scrape_job(area, filter):
         cl_ = CraigslistHousing(site=settings.SITE, area=area, category=settings.CATEGORY, filters=filter)
     else:
         cl_ = CraigslistForSale(site=settings.SITE, area=area, category=settings.CATEGORY, filters=filter)
-
+    approx_count = cl_.get_results_approx_count()
+    print(f'Got approximately {approx_count} results')
     results = []
     gen = cl_.get_results(sort_by='newest', geotagged=True, limit=300)
+    max_results = min(200,approx_count)
+    n = 0
+    # for n in range(max_results)
     while True:
+        n+=1
+        if n > max_results:
+            break
         try:
             result = next(gen)
+
         except StopIteration:
             break
-        except Exception:
+        except Exception as e:
+            print(e)
             continue
 
+        # print(result)
+        
         # Don't store the listing if it already exists.
         if session.query(Listing).filter_by(cl_id=result["id"]).first() is None:
             if result["where"] is None:
                 # If there is no string identifying which neighborhood the result is from, skip it.
-                continue
+                print('where is none: continue?', result)
+
+                # continue
             if any(tok in result["name"].lower() for tok in settings.BLACKLIST_TOKENS):
+                print(f'blacklisted: {result["name"].lower()}')
                 continue
 
             lat = 0
             lon = 0
-            if result["geotag"] is not None:
+            if result.get("geotag", None) is not None:
                 # Assign the coordinates.
                 lat = result["geotag"][0]
                 lon = result["geotag"][1]
@@ -77,8 +93,9 @@ def scrape_job(area, filter):
                 geo_data = find_points_of_interest(result["geotag"], result["where"])
                 result.update(geo_data)
             else:
-                result["area"] = ""
-                result["transit"] = ""
+                pass
+                # result["area"] = ""
+                # result["transit"] = ""
 
             # Try parsing the price.
             price = 0
@@ -87,42 +104,46 @@ def scrape_job(area, filter):
             except Exception:
                 pass
 
-            # Try parsing description.
-            result["description"] = ''
-            try:
-                response = requests.get(result["url"], headers={'User-Agent': settings.USERAGENT})
-                soup = BeautifulSoup(response.text, 'html.parser')
-                # TODO can also parse image urls here and other in post content.
-                desc = str(soup.find('section', {'id': 'postingbody'}).text)
-                result["description"] = desc.replace('QR Code Link to This Post', '').strip()
-                if any(tok in desc.lower() for tok in settings.BLACKLIST_TOKENS):
-                    continue
-            except Exception:
-                pass
-
+            # # Try parsing description.
+            # result["description"] = ''
+            # try:
+            #     response = requests.get(result["url"], headers={'User-Agent': settings.USERAGENT})
+            #     soup = BeautifulSoup(response.text, 'html.parser')
+            #     # TODO can also parse image urls here and other in post content.
+            #     desc = str(soup.find('section', {'id': 'postingbody'}).text)
+            #     result["description"] = desc.replace('QR Code Link to This Post', '').strip()
+            #     if any(tok in desc.lower() for tok in settings.BLACKLIST_TOKENS):
+            #         continue
+            # except Exception:
+            #     pass
+            
             # Create the listing object.
-            listing = Listing(
-                link=result["url"],
-                created=parse(result["datetime"]),
-                lat=lat,
-                lon=lon,
-                name=result["name"],
-                price=price,
-                location=result["where"],
-                cl_id=result["id"],
-                area=result["area"],
-                transit_stop=result["transit"],
-                # description=result["description"]
-            )
+            try:
+                listing = Listing(
+                    link=result["url"],
+                    created=parse(date.today().isoformat()), #parse(result["datetime"]),
+                    lat=lat,
+                    lon=lon,
+                    name=result["name"],
+                    price=price,
+                    location=result["where"],
+                    cl_id=result["id"],
+                    # area=result["area"],
+                    # transit_stop=result["transit"],
+                    # description=result["description"]
+                )
 
-            # Save the listing so we don't grab it again.
-            session.add(listing)
-            session.commit()
+                # Save the listing so we don't grab it again.
+                session.add(listing)
+                session.commit()
+            except Exception as e:
+                print(f'Skipping making listing for {result["name"]}, Exception: {e}')
 
             # Return the result if it's near a transit station, or if it is in an area we defined.
-            if len(result["transit"]) > 0 or len(result["area"]) > 0:
-                results.append(result)
-
+            # if len(result["transit"]) > 0 or len(result["area"]) > 0:
+            results.append(result)
+        # else:
+        # results.append(result)
     return results
 
 

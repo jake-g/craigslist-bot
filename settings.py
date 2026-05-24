@@ -16,13 +16,13 @@ SLEEP_INTERVAL = 40 * 60  # 20 minutes
 ## Location and Search preferences
 # Search filters (see craigslist.CraigslistHousing filters attribute)
 FILTERS = [
-    {'min_bedrooms': 1, 'max_bedrooms': 3, 'min_price': 1200, 'max_price': 2500},
+    {'min_bedrooms': 1, 'max_bedrooms': 3, 'min_price': 2000, 'max_price': 3000},
 ]
 
 # Ignore if post has these tokens in the posting
-BLACKLIST_TOKENS = ['apt', 'apartment', 'duplex', 'condo', 'unit',
-        'cornellandassociates', 'thecenturyseattle', 'commonsatballard', 
-        'funky fremont 2bedroom']
+BLACKLIST_TOKENS = ['apartment', 'duplex', 'condo', 'unit'] # 'apt', 
+        # 'cornellandassociates', 'thecenturyseattle', 'commonsatballard', 
+        # 'funky fremont 2bedroom']
 
 # The Craigslist site you want to search on.
 # Ex: https://sfbay.craigslist.org is SF and the Bay Area.
@@ -41,9 +41,49 @@ HOUSE_SEARCH = True  # use for apa or other housing categories
 # one of the boxes you defined, it will be checked to see if the neighborhood name it was listed under matches one
 # of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
 # but it also catches listings that don't have coordinates (many listings are missing this info).
-NEIGHBORHOODS = ["wallingford", "fremont", "green lake", "ballard", "phinney ridge", "east lake", 
-                "greenlake", "greenwood", "eastlake", "maple leaf", "north gate", "queen anne", 
-                "laurelhurst", "uw", "ravenna", "northgate", "phinny", "mapleleaf"]
+NEIGHBORHOODS = [
+    "south seattle",
+    "university",
+    "uw",
+    "phinny",
+    "north gate",
+    "northgate",
+    "ballard",
+    "beacon hill",
+    "bellevue",
+    "belltown",
+    "burien",
+    "capitol hill",
+    "columbia city",
+    "east lake",
+    "eastlake",
+    "edmonds",
+    "first hill",
+    "fremont",
+    "green lake",
+    "greenlake",
+    "greenwood",
+    "interbay",
+    "kirkland",
+    "lake city",
+    "lake forest park",
+    "laurelhurst",
+    "lynnwood",
+    "maple leaf",
+    "mapleleaf",
+    "othello",
+    "phinney ridge",
+    "queen anne",
+    "ravenna",
+    "redmond",
+    "renton",
+    "shoreline",
+    "vashon",
+    "wallingford",
+    "wedgwood",
+    "west seattle",
+    "white center"
+]
 
 # A list of neighborhoods and coordinates that you want to look for rentals in.  Any listing that has coordinates
 # attached will be checked to see which area it is in.  If there's a match, it will be annotated with the area name.
@@ -53,7 +93,7 @@ BOXES = {
         [47.645459, -122.345982],
         [47.664423, -122.323666],
     ],
-    "green_lake": [
+    "green lake": [
         [47.665001, -122.353363],
         [47.693548, -122.318344],
     ],
@@ -65,7 +105,7 @@ BOXES = {
         [47.661987, -122.407393, ],
         [47.684377, -122.363013]
     ],
-    "phinney_ridge": [
+    "phinney ridge": [
         [47.661987, -122.375096],
         [47.684377, -122.347799]
     ],
@@ -81,76 +121,75 @@ BOXES = {
         [47.686806, -122.325211],
         [47.707141, -122.304268],
     ],
-    "queen_anne": [
+    "queen anne": [
         [47.618131, -122.417047],
         [47.647061, -122.341809]
     ],
-    "university_district": [
+    "university district": [
         [47.652653, -122.321177],
         [47.668007, -122.290192],
     ],
     "ravenna": [
         [47.668585, -122.320404],
         [47.682686, -122.290707],
+    ],
+    "laurelhurst": [
+        [47.649700, -122.289419],
+        [47.667275, -122.254829],
+    ],
+    "downtown": [
+        [47.593360, -122.355113],
+        [47.617480, -122.322546]
+    ],
+    "capital hill": [
+        [47.606733, -122.327824],
+        [47.640772, -122.301673]
+    ],
+    "madison valley": [
+        [47.608362, -122.302016],
+        [47.642400, -122.275864]
+    ],
+    "central district": [
+        [47.591094, -122.317495],
+        [47.609313, -122.281628]
+    ],
+    "bellevue": [
+        [47.594642, -122.250895],
+        [47.683973, -122.089714]
+    ],
+    "bothell": [
+        [47.696081, -122.262352],
+        [47.785239, -122.137077]
+    ],
+    "mercer island": [
+        [47.525787, -122.246902],
+        [47.593974, -122.215127]
+    ],
+    "south seattle": [
+        [47.536931, -122.337557],
+        [47.593198, -122.256414]
+    ],
+    "west seattle": [
+        [47.487232, -122.424211],
+        [47.600286, -122.348608]
+    ],
+    "north seattle": [
+        [47.755829, -122.439143],
+        [47.900693, -122.091753]
+    ],
+    "north east seattle": [
+        [47.667564, -122.285128],
+        [47.692297, -122.242899],
     ]
 }
-
-    # "laurelhurst": [
-    #     [47.649700, -122.289419],
-    #     [47.667275, -122.254829],
-    # ],
-    # "north_east": [
-    #     [47.667564, -122.285128],
-    #     [47.692297, -122.242899],
-    # ],
-    # "downtown": [
-    #     [47.593360, -122.355113],
-    #     [47.617480, -122.322546]
-    # ],
-    # "capital hill": [
-    #     [47.606733, -122.327824],
-    #     [47.640772, -122.301673]
-    # ],
-    # "madison valley": [
-    #     [47.608362, -122.302016],
-    #     [47.642400, -122.275864]
-    # ],
-    # "central district": [
-    #     [47.591094, -122.317495],
-    #     [47.609313, -122.281628]
-    # ],
-    # "south seattle": [
-    #     [47.536931, -122.337557],
-    #     [47.593198, -122.256414]
-    # ],
-    # "west seattle": [
-    #     [47.487232, -122.424211],
-    #     [47.600286, -122.348608]
-    # ],
-    # "north seattle": [
-    #     [47.755829, -122.439143],
-    #     [47.900693, -122.091753]
-    # ],
-    # "bellevue": [
-    #     [47.594642, -122.250895],
-    #     [47.683973, -122.089714]
-    # ],
-    # "bothell": [
-    #     [47.696081, -122.262352],
-    #     [47.785239, -122.137077]
-    # ],
-    # "mercer island": [
-    #     [47.525787, -122.246902],
-    #     [47.593974, -122.215127]
-    # ]
 
 
 ## Transit preferences
 # The farthest you want to live from a transit stop.
-MAX_TRANSIT_DIST = None  # 2  # kilometers
+# MAX_TRANSIT_DIST = None  # 2  # kilometers
 # Transit stations you want to check against.  Every coordinate here will be checked against each listing,
 # and the closest station name will be added to the result and posted into Slack.
-TRANSIT_STATIONS = {}
+# TRANSIT_STATIONS = {}
 # TRANSIT_STATIONS = {
 #     "oakland_19th_bart": [37.8118051,-122.2720873],
 #     "macarthur_bart": [37.8265657,-122.2686705],
