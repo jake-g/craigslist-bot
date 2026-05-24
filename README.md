@@ -1,3 +1,19 @@
+# Craigslist Scraping Bot
+
+**2017 - 2023**
+
+> [!WARNING]
+> **Archived Repository & Deprecated Status**
+> This repository is archived and no longer actively maintained.
+> The bot has been **broken since late 2023** due to:
+> 1. Major breaking updates to Craigslist's static web layout and markup.
+> 2. The deprecation and abandonment of the underlying `python-craigslist` library (related to GitHub issue #122).
+> 
+> *An incomplete, experimental attempt to fix the bot using a custom library patch can be found on the `dev-house-2023` branch, but was abandoned.*
+
+## Overview
+This bot periodically scrapes Craigslist listings (for housing or items for sale) matching specific price and size filters, checks if they fall inside defined geographic coordinate bounding boxes, filters out blacklisted terms, and posts new matches to a Slack channel. It uses a local SQLite database to track processed listings and prevent duplicate alerts.
+
 Settings
 --------------------
 
@@ -73,63 +89,65 @@ Notes on filters
     }
 ```
 
-## Docker
+## Configuration
 
-* Create a folder called `config`, then put a file called `private.py` inside.
-* Specify new values for any of the settings above in `private.py`.
+* Create a file called `private.py` in the root of this folder.
+  * Add a variable called `SLACK_TOKEN` containing your Slack API token:
+    ```python
+    SLACK_TOKEN = "your-slack-bot-token"
+    ```
+  * You can also override any of the settings from `settings.py` inside `private.py` (e.g. customized `BOXES`, `NEIGHBORHOODS`, etc.) to keep your secrets/private configurations out of version control.
 
-## Manual
+---
 
-* Create a file called `private.py` in this folder.
-    * Add a value called `SLACK_TOKEN` that contains your Slack API token.
-    * Add any other values you want to `private.py`.
+## Installation & Running
 
-Installation + Usage
---------------------
+### Option A: Systemd Linux Service (Recommended for servers/headless hosts)
+This method runs the scraper continuously in the background as a system service. Designed for DietPi/Debian servers.
 
-## Linux Service
-### Works 2018, dietpi and any debian linux
-* see `make_service.sh` for setup and instructions
+1. **Setup dependencies**:
+   ```bash
+   pip3 install -r requirements.txt
+   ```
+2. **Deploy the systemd service**:
+   Run the helper script:
+   ```bash
+   sudo ./make_service.sh
+   ```
+   This generates the service definition file, copies it to `/etc/systemd/system/craig-bot.service`, reloads systemd, and enables the service to start automatically on boot.
+3. **Verify/Control the service**:
+   * Check status:
+     ```bash
+     systemctl status craig-bot.service
+     ```
+   * Stream live logs:
+     ```bash
+     journalctl --unit=craig-bot -n 10 -f --no-pager
+     ```
+     *(Note: `make_service.sh` automatically appends a shell alias `criag-bot` to your `~/.bashrc` to stream logs easily).*
 
-## Docker
-### Old: pre-2018
-
-* Make sure to do the steps in the configuration section above first.
-* Install Docker by following [these instructions](https://docs.docker.com/engine/installation/).
-* first build cd into this dir, run: `docker build -t craigslist . `
-* you have to remove an old version image first `docker rmi craigslist`
-* To run the program with the default configuration:
-    * `docker run -d -e SLACK_TOKEN={YOUR_SLACK_TOKEN} craigslist`
-* To run the program with your own configuration:
-    * `docker run -d -e SLACK_TOKEN={YOUR_SLACK_TOKEN} -v {ABSOLUTE_PATH_TO_YOUR_CONFIG_FOLDER}:/opt/wwc/craigslist-bot/config craigslist`
-
-
-Troubleshooting
----------------------
-
-## Docker
-### Old: pre-2018
-* see the `start_docker.sh` script
-* Use `docker ps` to get the id of the container running the bot.
-* Run `docker exec -it {YOUR_CONTAINER_ID} /bin/bash` to get a command shell inside the container.
-* Run `sqlite listings.db` to run the sqlite command line tool and inspect the database state (the only table is also called `listings`).
-    * `select * from listings` will get all of the stored listings.
-    * If nothing is in the database, you may need to wait for a bit, or verify that your settings aren't too restrictive and aren't finding any listings.
-    * You can see how many listings are being found by looking at the logs.
-* Inspect the logs using `tail -f -n 1000 /opt/wwc/logs/craigslist-bot.log`. (dockerfile has alias for this: `log`)
-
-
-
-On Server (no docker)
---------------------
-### Old: pre-2018
-1. Install pre-reqs
+### Option B: Manual Execution
+To run the bot directly:
+```bash
+python3 main_loop.py
 ```
-apt-get update && apt-get -y install python3 python3-pip make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev zip git-core supervisor sqlite
-```
-2. Make folders `mkdir -p /opt/wwc && mkdir -p /opt/wwc/logs`
-3. Clone repo in `/opt/wwc` make sure the repo folder is called `craigslist-bot`, or whatever the path in `supervisord.conf` is
-4. merge `deployment/supervisord.conf` with `/etc/supervisor/supervisord.conf`, note `nodaemon=true` will not let you do other stuff on server (kinda)
-5. Install python packages: `pip3 install -r requirements.txt`
-6. Add alias to view log `alias cl-log="tail -f -n 1000 /opt/wwc/logs/craigslist-bot.log"`
-7. Reboot and make sure it is running at boot (use alias to check log)
+This starts the scraper, which queries Craigslist according to `SLEEP_INTERVAL` (defaults to every 40 minutes) and posts new findings to Slack.
+
+---
+
+## Technical Details & Troubleshooting
+
+### Scraped History Database (`listings.db`)
+* The bot uses a local SQLite database file named `listings.db` to keep track of already scraped and processed listing IDs.
+* If you delete this file, the bot will treat all matching listings as new on the next run and re-post duplicate alerts to Slack.
+* To inspect or clean the database manually:
+  ```bash
+  sqlite3 listings.db
+  # Query parsed listings
+  sqlite> select * from listings;
+  ```
+
+---
+
+## Appendix: Historical Deployments
+For older deployment configurations using Docker or Supervisor, see the archived documentation at [old/deployment/README_OLD.md](file:///Users/jakegarrison/Downloads/projects/craigslist-bot/old/deployment/README_OLD.md).
