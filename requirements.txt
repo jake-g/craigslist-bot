@@ -1,4 +1,6 @@
-python-craigslist>=1.0.3
+# python-craigslist>=1.0.3
+# https://github.com/juliomalegria/python-craigslist/issues/122
+# python-craigslist @ git+https://github.com/ethan021021/python-craigslist
 sqlalchemy
 python-dateutil
 slackclient
